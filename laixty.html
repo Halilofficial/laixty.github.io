@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>laixty</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --pure-black: #000000;
+            --dark-gray: #0a0a0a;
+            --discord-dark: #1a1a1a;
+            --blood-red: #8B0000;
+            --bright-red: #dc143c;
+            --text-white: #ffffff;
+            --text-gray: #b9bbbe;
+            --online: #3ba55d;
+            --developer: #3b82f6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--pure-black);
+            color: var(--text-white);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Hamburger Menu */
+        .menu-btn {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            width: 35px;
+            height: 30px;
+            cursor: pointer;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 5px;
+            background: transparent;
+            border: none;
+        }
+
+        .menu-btn span {
+            display: block;
+            width: 100%;
+            height: 3px;
+            background-color: var(--text-white);
+            border-radius: 2px;
+            transition: all 0.3s ease;
+        }
+
+        .menu-btn.active span:nth-child(1) {
+            transform: rotate(45deg) translate(6px, 6px);
+            background-color: var(--bright-red);
+        }
+
+        .menu-btn.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .menu-btn.active span:nth-child(3) {
+            transform: rotate(-45deg) translate(6px, -6px);
+            background-color: var(--bright-red);
+        }
+
+        /* Sidebar Menu */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            right: -300px;
+            width: 300px;
+            height: 100vh;
+            background-color: var(--discord-dark);
+            border-left: 1px solid #333;
+            transition: right 0.3s ease;
+            z-index: 999;
+            padding-top: 80px;
+        }
+
+        .sidebar.active {
+            right: 0;
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s;
+            z-index: 998;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .menu-item {
+            display: block;
+            padding: 20px 30px;
+            color: var(--text-white);
+            text-decoration: none;
+            font-size: 1.1rem;
+            border-bottom: 1px solid #333;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 0;
+            height: 100%;
+            background-color: var(--blood-red);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+
+        .menu-item:hover::before {
+            width: 100%;
+        }
+
+        .menu-item:hover {
+            padding-left: 40px;
+            color: var(--text-white);
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 80px 20px 40px;
+        }
+
+        /* Discord Profile Style */
+        .profile-header {
+            background: var(--discord-dark);
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 30px;
+            border: 1px solid #333;
+        }
+
+        .profile-banner {
+            height: 120px;
+            background: linear-gradient(135deg, var(--blood-red), #2d0000);
+            position: relative;
+        }
+
+        .profile-info {
+            padding: 0 20px 20px;
+            position: relative;
+        }
+
+        .avatar-wrapper {
+            margin-top: -50px;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .avatar {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--blood-red), var(--dark-gray));
+            border: 6px solid var(--discord-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            overflow: hidden;
+            position: relative;
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .status-indicator {
+            position: absolute;
+            bottom: 5px;
+            right: 5px;
+            width: 25px;
+            height: 25px;
+            background-color: var(--online);
+            border: 4px solid var(--discord-dark);
+            border-radius: 50%;
+        }
+
+        .username {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .username-text {
+            color: var(--text-white);
+        }
+
+        .discriminator {
+            color: var(--text-gray);
+            font-size: 1.2rem;
+            font-weight: 400;
+        }
+
+        /* Rozetler - Sadece Geliştirici */
+        .badges {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .badge {
+            width: 24px;
+            height: 24px;
+            background: var(--developer);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            cursor: help;
+            position: relative;
+            transition: transform 0.2s;
+        }
+
+        .badge:hover {
+            transform: scale(1.1);
+        }
+
+        .badge::after {
+            content: 'Geliştirici';
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #000;
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            white-space: nowrap;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.2s;
+        }
+
+        .badge:hover::after {
+            opacity: 1;
+        }
+
+        /* Hakkımda Bölümü - Discord Stili */
+        .about-section {
+            background-color: #111111;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 15px;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--text-gray);
+            font-weight: 700;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .about-text {
+            color: var(--text-gray);
+            line-height: 1.6;
+            font-size: 0.95rem;
+        }
+
+        .about-text p {
+            margin-bottom: 12px;
+        }
+
+        .about-text p:last-child {
+            margin-bottom: 0;
+        }
+
+        /* Discord ID ve Tarih */
+        .profile-details {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #333;
+        }
+
+        .detail-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-gray);
+            font-size: 0.85rem;
+            margin-bottom: 8px;
+        }
+
+        .detail-item:last-child {
+            margin-bottom: 0;
+        }
+
+        .detail-icon {
+            font-size: 16px;
+        }
+
+        /* Content Sections */
+        .content-section {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .content-section.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Section Cards */
+        .section-card {
+            background-color: var(--discord-dark);
+            border-radius: 8px;
+            padding: 25px;
+            margin-bottom: 20px;
+            border: 1px solid #333;
+        }
+
+        .section-title {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--blood-red);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Friends Grid */
+        .friends-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
+        .friend-card {
+            background-color: rgba(0,0,0,0.3);
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .friend-card:hover {
+            border-color: var(--blood-red);
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(139, 0, 0, 0.3);
+        }
+
+        .friend-avatar {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #333, #111);
+            margin: 0 auto 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            border: 2px solid #444;
+            overflow: hidden;
+        }
+
+        .friend-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .friend-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 3px;
+        }
+
+        .friend-status {
+            font-size: 0.75rem;
+            color: #3ba55d;
+        }
+
+        /* Social Links */
+        .social-list {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            padding: 15px 20px;
+            background-color: rgba(0,0,0,0.3);
+            border: 1px solid #333;
+            border-radius: 8px;
+            color: var(--text-white);
+            text-decoration: none;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: var(--blood-red);
+            transition: width 0.3s ease;
+            z-index: 0;
+        }
+
+        .social-btn:hover::before {
+            width: 100%;
+        }
+
+        .social-btn:hover {
+            border-color: var(--bright-red);
+            transform: translateX(5px);
+        }
+
+        .social-icon {
+            font-size: 24px;
+            z-index: 1;
+            position: relative;
+        }
+
+        .social-info {
+            z-index: 1;
+            position: relative;
+        }
+
+        .social-name {
+            font-weight: 600;
+            font-size: 1rem;
+        }
+
+        .social-handle {
+            font-size: 0.85rem;
+            color: var(--text-gray);
+        }
+
+        /* Server Section */
+        .server-card {
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.1), rgba(0,0,0,0.3));
+            border: 2px solid var(--blood-red);
+            text-align: center;
+            padding: 40px 30px;
+        }
+
+        .server-icon-large {
+            width: 100px;
+            height: 100px;
+            border-radius: 20px;
+            background: linear-gradient(135deg, var(--blood-red), #2d0000);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 50px;
+            box-shadow: 0 0 30px rgba(139, 0, 0, 0.4);
+        }
+
+        .server-name {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .server-description {
+            color: var(--text-gray);
+            margin-bottom: 25px;
+            line-height: 1.6;
+        }
+
+        .join-server-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 15px 40px;
+            background-color: transparent;
+            color: var(--text-white);
+            text-decoration: none;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            border: 2px solid var(--blood-red);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .join-server-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 0;
+            height: 100%;
+            background-color: var(--blood-red);
+            transition: width 0.3s ease;
+            z-index: -1;
+        }
+
+        .join-server-btn:hover::before {
+            width: 100%;
+        }
+
+        .join-server-btn:hover {
+            border-color: var(--bright-red);
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.5);
+        }
+
+        .menu-divider {
+            height: 1px;
+            background: #333;
+            margin: 10px 20px;
+        }
+
+        .menu-header {
+            padding: 0 30px 15px;
+            color: var(--text-gray);
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Hamburger Menu Button -->
+    <button class="menu-btn" onclick="toggleMenu()">
+        <span></span>
+        <span></span>
+        <span></span>
+    </button>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" onclick="toggleMenu()"></div>
+
+    <!-- Sidebar Menu -->
+    <nav class="sidebar">
+        <div class="menu-header">Menü</div>
+        <a href="#" class="menu-item" onclick="showSection('about', 'Hakkımda')">👤 Hakkımda</a>
+        <a href="#" class="menu-item" onclick="showSection('friends', 'Dostlarım')">👥 Dostlarım</a>
+        <a href="#" class="menu-item" onclick="showSection('social', 'Sosyal Medya')">🔗 Sosyal Medya</a>
+        <div class="menu-divider"></div>
+        <a href="#" class="menu-item" onclick="showSection('server', 'Discord Sunucum')">💬 Discord Sunucum</a>
+    </nav>
+
+    <div class="container">
+        
+        <!-- Discord Profil (Ana Sayfa) -->
+        <div id="about-section" class="content-section active">
+            <div class="profile-header">
+                <div class="profile-banner"></div>
+                <div class="profile-info">
+                    <div class="avatar-wrapper">
+                        <div class="avatar">
+                            <!-- PROFİL FOTOĞRAFIN BURADA -->
+                            <img src="https://mutluresim.com/images/2026/04/17/XTWwAm.webp" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size: 50px;\'>🩸</span>';">
+                        </div>
+                        <div class="status-indicator"></div>
+                    </div>
+                    
+                    <div class="username">
+                        <span class="username-text">laixtydev</span>
+                        <span class="discriminator">#0001</span>
+                    </div>
+                    
+                    <!-- SADECE GELİŞTİRİCİ ROZETİ -->
+                    <div class="badges">
+                        <div class="badge" title="Geliştirici">💻</div>
+                    </div>
+
+                    <!-- HAKKIMDA - DISCORD STİLİ -->
+                    <div class="about-section">
+                        <div class="section-label">Hakkımda</div>
+                        <div class="about-text">
+                            <p>Merhaba! Ben laixtydev. Discord botları ve web geliştirme ile uğraşıyorum.</p>
+                            <p>🎮 Oyun oynamayı severim<br>
+                            💻 Kod yazmak benim işim<br>
+                            🎵 Müzik dinlerim</p>
+                        </div>
+                    </div>
+
+                    <!-- PROFİL DETAYLARI -->
+                    <div class="profile-details">
+                        <div class="detail-item">
+                            <span class="detail-icon">🆔</span>
+                            <span>Discord ID: 1478113240943694043</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="detail-icon">📅</span>
+                            <span>Discord'a Katılma Tarihi: 17 Nisan 2024</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dostlarım Section -->
+        <div id="friends-section" class="content-section">
+            <div class="section-card">
+                <h2 class="section-title">👥 Dostlarım</h2>
+                <div class="friends-grid">
+                    
+                    <!-- ARKADAŞ 1: Aquxffy - FOTOĞRAFLI -->
+                    <div class="friend-card" onclick="window.open('https://discord.com/users/1059158356381683743', '_blank')">
+                        <div class="friend-avatar">
+                            <img src="https://mutluresim.com/images/2026/04/17/XTWyer.webp" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='💙';">
+                        </div>
+                        <div class="friend-name">Aquxffy</div>
+                        <div class="friend-status">Çevrimiçi</div>
+                    </div>
+
+                    <!-- ARKADAŞ 2 -->
+                    <div class="friend-card" onclick="window.open('https://discord.com/users/1059158356381683743', '_blank')">
+                        <div class="friend-avatar">🎨</div>
+                        <div class="friend-name">Arkadaş 2</div>
+                        <div class="friend-status">Çevrimiçi</div>
+                    </div>
+
+                    <!-- ARKADAŞ 3 -->
+                    <div class="friend-card" onclick="window.open('https://discord.com/users/ID3', '_blank')">
+                        <div class="friend-avatar">🎵</div>
+                        <div class="friend-name">Arkadaş 3</div>
+                        <div class="friend-status">Boşta</div>
+                    </div>
+
+                    <!-- ARKADAŞ 4 -->
+                    <div class="friend-card" onclick="window.open('https://discord.com/users/ID4', '_blank')">
+                        <div class="friend-avatar">⚔️</div>
+                        <div class="friend-name">Arkadaş 4</div>
+                        <div class="friend-status">Çevrimiçi</div>
+                    </div>
+
+                    <!-- ARKADAŞ 5 -->
+                    <div class="friend-card" onclick="window.open('https://discord.com/users/ID5', '_blank')">
+                        <div class="friend-avatar">🎯</div>
+                        <div class="friend-name">Arkadaş 5</div>
+                        <div class="friend-status">Rahatsız Etmeyin</div>
+                    </div>
+
+                    <!-- ARKADAŞ 6 -->
+                    <div class="friend-card" onclick="window.open('https://discord.com/users/ID6', '_blank')">
+                        <div class="friend-avatar">🔥</div>
+                        <div class="friend-name">Arkadaş 6</div>
+                        <div class="friend-status">Çevrimiçi</div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <!-- Sosyal Medya Section -->
+        <div id="social-section" class="content-section">
+            <div class="section-card">
+                <h2 class="section-title">🔗 Sosyal Medya</h2>
+                <div class="social-list">
+                    <a href="https://discord.com/users/1478113240943694043" target="_blank" class="social-btn">
+                        <span class="social-icon">💬</span>
+                        <div class="social-info">
+                            <div class="social-name">Discord</div>
+                            <div class="social-handle">laixtydev</div>
+                        </div>
+                    </a>
+                    
+                    <a href="https://instagram.com/SENIN_INSTAGRAM" target="_blank" class="social-btn">
+                        <span class="social-icon">📷</span>
+                        <div class="social-info">
+                            <div class="social-name">Instagram</div>
+                            <div class="social-handle">@instagram_adin</div>
+                        </div>
+                    </a>
+                    
+                    <a href="https://github.com/SENIN_GITHUB" target="_blank" class="social-btn">
+                        <span class="social-icon">💻</span>
+                        <div class="social-info">
+                            <div class="social-name">GitHub</div>
+                            <div class="social-handle">@github_adin</div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Discord Sunucum Section -->
+        <div id="server-section" class="content-section">
+            <div class="section-card server-card">
+                <div class="server-icon-large">🌙</div>
+                <h2 class="server-name">SUNUCU ADIN</h2>
+                <p class="server-description">
+                    Türkçe topluluk sunucusu! Oyun, sohbet, müzik ve eğlence için harika bir ortam. 
+                    Şimdi katıl ve topluluğumuzun bir parçası ol!
+                </p>
+                <a href="https://discord.gg/SUNUCU_LINKIN" target="_blank" class="join-server-btn">
+                    <span>➜</span>
+                    Sunucuya Katıl
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        function toggleMenu() {
+            document.querySelector('.menu-btn').classList.toggle('active');
+            document.querySelector('.sidebar').classList.toggle('active');
+            document.querySelector('.sidebar-overlay').classList.toggle('active');
+        }
+
+        function showSection(sectionId, title) {
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            document.getElementById(sectionId + '-section').classList.add('active');
+            
+            toggleMenu();
+        }
+
+        document.querySelector('.sidebar-overlay').addEventListener('click', toggleMenu);
+    </script>
+
+</body>
+</html>
