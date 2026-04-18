@@ -699,31 +699,23 @@
 <body>
 
     <!-- Hamburger Menu Button -->
-    <button class="menu-btn" onclick="toggleMenu()">
+    <button class="menu-btn" id="menuBtn">
         <span></span>
         <span></span>
         <span></span>
     </button>
 
     <!-- Sidebar Overlay -->
-    <div class="sidebar-overlay" onclick="toggleMenu()"></div>
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
 
     <!-- Sidebar Menu -->
-    <nav class="sidebar">
+    <nav class="sidebar" id="sidebar">
         <div class="menu-header">Menü</div>
-        <a href="#" class="menu-item" onclick="showSection('about', 'Hakkımda')">
-            <span class="menu-icon"><img src="icon-user.png" alt=""></span> Hakkımda
-        </a>
-        <a href="#" class="menu-item" onclick="showSection('friends', 'Dostlarım')">
-            <span class="menu-icon"><img src="heart.png" alt=""></span> Dostlarım
-        </a>
-        <a href="#" class="menu-item" onclick="showSection('social', 'Sosyal Medya')">
-            <span class="menu-icon"><img src="sosyal.png" alt=""></span> Sosyal Medya
-        </a>
+        <a href="#" class="menu-item" data-section="about">Hakkımda</a>
+        <a href="#" class="menu-item" data-section="friends">Dostlarım</a>
+        <a href="#" class="menu-item" data-section="social">Sosyal Medya</a>
         <div class="menu-divider"></div>
-        <a href="#" class="menu-item" onclick="showSection('server', 'Discord Sunucum')">
-            <span class="menu-icon"><img src="reddc.png" alt=""></span> Discord Sunucum
-        </a>
+        <a href="#" class="menu-item" data-section="server">Discord Sunucum</a>
     </nav>
 
     <div class="container">
@@ -944,7 +936,7 @@
                     </div>
                 </div>
 
-                <a href="https://discord.gg/SUNUCU_LINKIN" target="_blank" class="join-server-btn" style="margin-top: 20px;">
+                <a href="https://discord.gg/xDCga2Qwf4" target="_blank" class="join-server-btn" style="margin-top: 20px;">
                     <span>➜</span>
                     Sunucuya Katıl
                 </a>
@@ -958,7 +950,7 @@
                 <iframe 
                     id="discord-widget"
                     class="discord-widget"
-                    src="https://discord.com/widget?id=SENIN_SUNUCU_ID&theme=dark" 
+                    src="https://discord.com/widget?id=1491420315769634896&theme=dark" 
                     width="100%" 
                     height="400" 
                     allowtransparency="true" 
@@ -971,91 +963,94 @@
     </div>
 
     <script>
-        // Menü fonksiyonları
+        // DOM elementlerini seç
+        const menuBtn = document.getElementById('menuBtn');
+        const sidebar = document.getElementById('sidebar');
+        const sidebarOverlay = document.getElementById('sidebarOverlay');
+        const menuItems = document.querySelectorAll('.menu-item');
+
+        // Menü aç/kapa fonksiyonu
         function toggleMenu() {
-            document.querySelector('.menu-btn').classList.toggle('active');
-            document.querySelector('.sidebar').classList.toggle('active');
-            document.querySelector('.sidebar-overlay').classList.toggle('active');
+            menuBtn.classList.toggle('active');
+            sidebar.classList.toggle('active');
+            sidebarOverlay.classList.toggle('active');
         }
 
-        function showSection(sectionId, title) {
+        // Menü butonuna tıkla
+        menuBtn.addEventListener('click', toggleMenu);
+
+        // Overlay'e tıkla (menü dışına)
+        sidebarOverlay.addEventListener('click', toggleMenu);
+
+        // Menü itemlerine tıkla
+        menuItems.forEach(item => {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const sectionId = this.getAttribute('data-section');
+                showSection(sectionId);
+                toggleMenu(); // Menüyü kapat
+            });
+        });
+
+        // Bölüm göster fonksiyonu
+        function showSection(sectionId) {
+            // Tüm bölümleri gizle
             document.querySelectorAll('.content-section').forEach(section => {
                 section.classList.remove('active');
             });
             
-            document.getElementById(sectionId + '-section').classList.add('active');
+            // Seçilen bölümü göster
+            const targetSection = document.getElementById(sectionId + '-section');
+            if (targetSection) {
+                targetSection.classList.add('active');
+            }
             
             // Discord sekmesi açılırsa verileri güncelle
             if (sectionId === 'server') {
                 updateDiscordData();
             }
-            
-            toggleMenu();
         }
 
-        document.querySelector('.sidebar-overlay').addEventListener('click', toggleMenu);
-
         // Discord API'den canlı veri çekme
-        const DISCORD_SERVER_ID =  'SENIN_SUNUCU_ID';1491420315769634896 // Buraya sunucu ID'nizi yazın
-        const DISCORD_INVITE_CODE = 'SUNUCU_LINKIN'; https://discord.gg/xDCga2Qwf4 // Buraya davet kodunuzu yazın
+        const DISCORD_SERVER_ID = '1491420315769634896';
+        const DISCORD_INVITE_LINK = 'https://discord.gg/xDCga2Qwf4';
 
         async function updateDiscordData() {
             try {
-                // Discord Widget API'den veri çek
                 const response = await fetch(`https://discord.com/api/guilds/${DISCORD_SERVER_ID}/widget.json`);
                 const data = await response.json();
 
-                // Sunucu adını güncelle
                 if (data.name) {
                     document.getElementById('server-name').textContent = data.name;
                 }
 
-                // Online üye sayısını güncelle
                 if (data.presence_count !== undefined) {
                     document.getElementById('online-members').textContent = data.presence_count;
                 }
 
-                // Toplam üye sayısı (approximate_member_count varsa)
                 if (data.approximate_member_count) {
                     document.getElementById('total-members').textContent = data.approximate_member_count;
                 } else {
-                    // Yoksa online + offline tahmini
                     document.getElementById('total-members').textContent = data.presence_count || '-';
                 }
 
-                // Sunucu ikonunu güncelle
                 if (data.id && data.icon) {
                     const iconUrl = `https://cdn.discordapp.com/icons/${data.id}/${data.icon}.png?size=256`;
                     document.getElementById('server-icon').src = iconUrl;
                 }
 
-                // Davet linkini güncelle
-                if (data.instant_invite) {
-                    document.querySelector('.join-server-btn').href = data.instant_invite;
-                }
-
-                // Açıklama güncelle
                 document.getElementById('server-description').textContent = 
-                    `${data.name} sunucusuna hoş geldin! Gerçek zamanlı istatistikler aşağıda.`;
+                    `${data.name || 'Sunucu'} sunucusuna hoş geldin! Gerçek zamanlı istatistikler aşağıda.`;
 
             } catch (error) {
                 console.error('Discord verisi alınamadı:', error);
-                document.getElementById('server-name').textContent = 'Discord Sunucum';
+                document.getElementById('server-name').textContent = 'laixty Community';
                 document.getElementById('server-description').textContent = 
-                    'Sunucu bilgileri şu anda alınamıyor. Aşağıdaki butondan katılabilirsiniz.';
+                    'Discord sunucumuza katılmak için aşağıdaki butona tıklayın!';
+                document.getElementById('online-members').textContent = '?';
+                document.getElementById('total-members').textContent = '?';
             }
         }
-
-        // Sayfa yüklendiğinde ve her 30 saniyede bir güncelle
-        setInterval(() => {
-            if (document.getElementById('server-section').classList.contains('active')) {
-                updateDiscordData();
-            }
-        }, 30000);
-
-        // Widget iframe'ini güncelle (sunucu ID'si ile)
-        document.getElementById('discord-widget').src = 
-            `https://discord.com/widget?id=${DISCORD_SERVER_ID}&theme=dark`;
     </script>
 
 </body>
