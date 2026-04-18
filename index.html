@@ -452,6 +452,31 @@
             color: #3ba55d;
         }
 
+        /* Aslan Gencim Section */
+        .aslan-section {
+            background-color: var(--discord-dark);
+            border-radius: 8px;
+            padding: 25px;
+            margin-top: 20px;
+            border: 1px solid #333;
+        }
+
+        .aslan-title {
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--blood-red);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .aslan-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 15px;
+        }
+
         /* Social Links */
         .social-list {
             display: flex;
@@ -704,6 +729,7 @@
 
         <!-- Dostlarım Section -->
         <div id="friends-section" class="content-section">
+            <!-- Dostlarım Kartı -->
             <div class="section-card">
                 <h2 class="section-title">
                     <span class="section-icon"><img src="heart.png" alt=""></span> Dostlarım
@@ -770,6 +796,34 @@
                             <img src="radde.png" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='⭐';">
                         </div>
                         <div class="friend-name">Radde</div>
+                        <div class="friend-status">Çevrimiçi</div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Aslan Gencim Kartı -->
+            <div class="aslan-section">
+                <h2 class="aslan-title">
+                    <span class="section-icon"><img src="lion.png" alt=""></span> Aslan Gencim
+                </h2>
+                <div class="aslan-grid">
+                    
+                    <!-- SaliFrix - salih.png -->
+                    <div class="friend-card" onclick="window.open('https://discord.com/users/ID8', '_blank')">
+                        <div class="friend-avatar">
+                            <img src="salih.png" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='🦁';">
+                        </div>
+                        <div class="friend-name">SaliFrix</div>
+                        <div class="friend-status">Çevrimiçi</div>
+                    </div>
+
+                    <!-- Waezie - wae.png -->
+                    <div class="friend-card" onclick="window.open('https://discord.com/users/ID9', '_blank')">
+                        <div class="friend-avatar">
+                            <img src="wae.png" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='👑';">
+                        </div>
+                        <div class="friend-name">Waezie</div>
                         <div class="friend-status">Çevrimiçi</div>
                     </div>
 
