@@ -24,12 +24,6 @@
             --dnd: #ed4245;
             --offline: #747f8d;
             --developer: #3b82f6;
-            /* ARKADAŞIN SUNUCUSU - GRADIENT TURUNCU TEMA */
-            --friend-orange-light: #FFB347;  /* Açık turuncu */
-            --friend-yellow-orange: #FFCC33; /* Sarı-turuncu */
-            --friend-orange: #FF8C00;        /* Turuncu */
-            --friend-orange-dark: #CC5500;   /* Koyu turuncu */
-            --friend-black: #1a0a00;         /* Siyah turuncu */
         }
 
         body {
@@ -38,6 +32,10 @@
             color: var(--text-white);
             min-height: 100vh;
             overflow-x: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
         }
 
         /* Hamburger Menu */
@@ -117,36 +115,28 @@
         }
 
         .menu-item {
-            display: block;
-            padding: 20px 30px;
-            color: var(--text-white);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin: 8px 16px;
+            padding: 14px 20px;
+            background: rgba(139, 0, 0, 0.1);
+            border: 1px solid rgba(139, 0, 0, 0.3);
+            border-radius: 12px;
+            color: #dc143c;
             text-decoration: none;
-            font-size: 1.1rem;
-            border-bottom: 1px solid #333;
+            font-size: 0.95rem;
+            font-weight: 600;
             transition: all 0.3s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .menu-item::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 0;
-            height: 100%;
-            background-color: var(--blood-red);
-            transition: width 0.3s ease;
-            z-index: -1;
-        }
-
-        .menu-item:hover::before {
-            width: 100%;
+            cursor: pointer;
         }
 
         .menu-item:hover {
-            padding-left: 40px;
-            color: var(--text-white);
+            background: rgba(139, 0, 0, 0.2);
+            border-color: #dc143c;
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.3);
+            transform: translateY(-2px);
+            color: #dc143c;
         }
 
         /* Menu Icon */
@@ -164,51 +154,63 @@
             object-fit: contain;
         }
 
-        /* Main Container */
+        /* Main Container - KARE FORMAT */
         .container {
-            max-width: 800px;
+            width: 100%;
+            max-width: 420px;
             margin: 0 auto;
-            padding: 80px 20px 40px;
+            padding: 0;
         }
 
-        /* Discord Profile Style */
-        .profile-header {
-            background: var(--discord-dark);
-            border-radius: 8px;
+        /* ===== DARK RED PROFİL KARTI - KARE FORMAT ===== */
+        .profile-card {
+            background: linear-gradient(180deg, #1a0a0a 0%, #0d0000 100%);
+            border-radius: 20px;
             overflow: hidden;
-            margin-bottom: 30px;
-            border: 1px solid #333;
+            border: 1px solid #2a0000;
+            box-shadow: 0 0 60px rgba(139, 0, 0, 0.2), 0 0 120px rgba(139, 0, 0, 0.05);
         }
 
         .profile-banner {
             height: 120px;
-            background: linear-gradient(135deg, var(--blood-red), #2d0000);
+            background: linear-gradient(135deg, #4a0000 0%, #1a0000 50%, #0d0000 100%);
             position: relative;
+            overflow: hidden;
         }
 
-        .profile-info {
+        .profile-banner::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 50px;
+            background: linear-gradient(to top, #1a0a0a, transparent);
+        }
+
+        .profile-content {
             padding: 0 20px 20px;
             position: relative;
         }
 
         .avatar-wrapper {
-            margin-top: -50px;
-            margin-bottom: 15px;
+            margin-top: -45px;
+            margin-bottom: 12px;
             position: relative;
             display: inline-block;
         }
 
         .avatar {
-            width: 100px;
-            height: 100px;
+            width: 90px;
+            height: 90px;
             border-radius: 50%;
-            background: linear-gradient(135deg, var(--blood-red), var(--dark-gray));
-            border: 6px solid var(--discord-dark);
+            background: linear-gradient(135deg, #8B0000, #1a0000);
+            border: 4px solid #1a0a0a;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 40px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.5);
+            font-size: 36px;
+            box-shadow: 0 4px 20px rgba(139, 0, 0, 0.4);
             overflow: hidden;
             position: relative;
         }
@@ -219,142 +221,288 @@
             object-fit: cover;
         }
 
-        .status-indicator {
+        .status-dot {
             position: absolute;
-            bottom: 5px;
-            right: 5px;
-            width: 25px;
-            height: 25px;
-            background-color: var(--dnd);
-            border: 4px solid var(--discord-dark);
+            bottom: 4px;
+            right: 4px;
+            width: 22px;
+            height: 22px;
+            background-color: #ed4245;
+            border: 3px solid #1a0a0a;
             border-radius: 50%;
         }
 
-        .username {
-            font-size: 1.8rem;
+        .username-area {
+            margin-bottom: 10px;
+        }
+
+        .username-main {
+            font-size: 1.4rem;
             font-weight: 700;
-            margin-bottom: 8px;
+            color: #ffffff;
             display: flex;
             align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .username-text {
-            color: var(--text-white);
-        }
-
-        .discriminator {
-            color: var(--text-gray);
-            font-size: 1.2rem;
-            font-weight: 400;
-        }
-
-        /* Rozetler - Sadece Geliştirici */
-        .badges {
-            display: flex;
             gap: 8px;
-            margin-bottom: 20px;
             flex-wrap: wrap;
         }
 
-        .badge {
-            width: 24px;
-            height: 24px;
+        .username-tag {
+            color: #8B0000;
+            font-size: 0.85rem;
+            font-weight: 600;
+            background: rgba(139, 0, 0, 0.15);
+            padding: 2px 8px;
+            border-radius: 10px;
+            border: 1px solid rgba(139, 0, 0, 0.3);
+        }
+
+        .username-handle {
+            color: #8B0000;
+            font-size: 0.85rem;
+            margin-top: 2px;
+            font-weight: 500;
+        }
+
+        /* Badges */
+        .badges-row {
+            display: flex;
+            gap: 6px;
+            margin-bottom: 16px;
+            flex-wrap: wrap;
+        }
+
+        .badge-item {
+            width: 26px;
+            height: 26px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            cursor: help;
+            cursor: pointer;
             position: relative;
-            transition: transform 0.2s;
-            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+            overflow: visible;
+            background: rgba(139, 0, 0, 0.2);
+            border: 1px solid rgba(139, 0, 0, 0.3);
         }
 
-        .badge img {
+        .badge-item img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            border-radius: 50%;
+            overflow: hidden;
         }
 
-        .badge:hover {
+        .badge-item:hover {
             transform: scale(1.1);
+            box-shadow: 0 0 10px rgba(139, 0, 0, 0.4);
         }
 
-        .badge::after {
-            content: 'Geliştirici';
+        .badge-item.selected {
+            border: 2px solid #dc143c;
+            box-shadow: 0 0 14px rgba(220, 20, 60, 0.7);
+            transform: scale(1.15);
+            background: rgba(139, 0, 0, 0.3);
+        }
+
+        .badge-tooltip {
+            display: none;
             position: absolute;
-            bottom: -25px;
+            bottom: calc(100% + 8px);
             left: 50%;
             transform: translateX(-50%);
-            background: #000;
+            background: #18191c;
+            border: 1px solid #dc143c;
             color: #fff;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 11px;
-            white-space: nowrap;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s;
-        }
-
-        .badge:hover::after {
-            opacity: 1;
-        }
-
-        /* Hakkımda Bölümü - Discord Stili */
-        .about-section {
-            background-color: #111111;
-            border-radius: 8px;
-            padding: 16px;
-            margin-top: 15px;
-        }
-
-        .section-label {
             font-size: 0.75rem;
+            font-weight: 600;
+            padding: 5px 10px;
+            border-radius: 6px;
+            white-space: nowrap;
+            z-index: 100;
+            pointer-events: none;
+            box-shadow: 0 4px 16px rgba(220, 20, 60, 0.4);
+        }
+
+        .badge-tooltip::after {
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 5px solid transparent;
+            border-top-color: #dc143c;
+        }
+
+        .badge-item.selected .badge-tooltip {
+            display: block;
+        }
+
+        /* Divider */
+        .section-divider {
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, #4a0000 50%, transparent 100%);
+            margin: 16px 0;
+        }
+
+        /* About Section */
+        .about-box {
+            background: rgba(10, 0, 0, 0.6);
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid #2a0000;
+        }
+
+        .about-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            color: #8B0000;
+            font-size: 0.7rem;
             text-transform: uppercase;
-            color: var(--text-gray);
             font-weight: 700;
-            margin-bottom: 10px;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
+        }
+
+        .about-header::before {
+            content: '📋';
+            font-size: 12px;
+        }
+
+        .about-header::after {
+            content: '';
+            flex: 1;
+            height: 1px;
+            background: linear-gradient(90deg, #4a0000, transparent);
+            margin-left: 8px;
         }
 
         .about-text {
-            color: var(--text-gray);
+            color: #c9c9c9;
             line-height: 1.6;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
         }
 
         .about-text p {
-            margin-bottom: 12px;
+            margin-bottom: 10px;
         }
 
         .about-text p:last-child {
             margin-bottom: 0;
         }
 
-        /* Discord ID ve Tarih */
-        .profile-details {
-            margin-top: 15px;
-            padding-top: 15px;
-            border-top: 1px solid #333;
+        .highlight-name {
+            color: #dc143c;
+            font-weight: 600;
         }
 
-        .detail-item {
+        .highlight-role {
+            color: #dc143c;
+            font-weight: 600;
+        }
+
+        /* Skills Tags */
+        .skills-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+            margin-top: 12px;
+        }
+
+        .skill-tag {
+            background: rgba(139, 0, 0, 0.15);
+            border: 1px solid rgba(139, 0, 0, 0.3);
+            color: #dc143c;
+            padding: 5px 12px;
+            border-radius: 16px;
+            font-size: 0.75rem;
+            font-weight: 600;
             display: flex;
             align-items: center;
-            gap: 8px;
-            color: var(--text-gray);
-            font-size: 0.85rem;
-            margin-bottom: 8px;
+            gap: 5px;
         }
 
-        .detail-item:last-child {
-            margin-bottom: 0;
+        /* ===== PROJELERİM - YAKINDA DÜĞMESİ ===== */
+        .projects-section {
+            margin-top: 16px;
         }
 
-        .detail-icon {
-            font-size: 16px;
+        .projects-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 14px 20px;
+            background: rgba(139, 0, 0, 0.1);
+            border: 1px solid rgba(139, 0, 0, 0.3);
+            border-radius: 12px;
+            color: #dc143c;
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 600;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .projects-btn:hover {
+            background: rgba(139, 0, 0, 0.2);
+            border-color: #dc143c;
+            box-shadow: 0 0 20px rgba(139, 0, 0, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .projects-btn .soon-badge {
+            background: rgba(139, 0, 0, 0.3);
+            color: #dc143c;
+            padding: 2px 8px;
+            border-radius: 8px;
+            font-size: 0.7rem;
+            font-weight: 700;
+            border: 1px solid rgba(139, 0, 0, 0.4);
+        }
+
+        /* ===== MADE BY LAIXTY ===== */
+        .made-by {
+            text-align: center;
+            margin-top: 16px;
+            padding-top: 16px;
+            border-top: 1px solid #2a0000;
+            color: #4a0000;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 1px;
+        }
+
+        .made-by span {
+            color: #8B0000;
+            font-weight: 600;
+        }
+
+        /* About section GIF background */
+        #about-section {
+            position: relative;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        #about-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('indir.gif') center center / cover no-repeat;
+            border-radius: 20px;
+            z-index: 0;
+            opacity: 0.35;
+            pointer-events: none;
+        }
+
+        #about-section > .profile-card {
+            position: relative;
+            z-index: 1;
+            background: linear-gradient(180deg, rgba(26,10,10,0.82) 0%, rgba(13,0,0,0.88) 100%);
         }
 
         /* Content Sections */
@@ -458,7 +606,7 @@
             color: #3ba55d;
         }
 
-        /* Petrolcü Section - Özel Stil */
+        /* Petrolcü Section */
         .petrolcu-section {
             background-color: var(--discord-dark);
             border-radius: 8px;
@@ -535,7 +683,7 @@
             color: #FFD700;
         }
 
-        /* Piercer Section - Kırmızı Tema */
+        /* Piercer Section */
         .piercer-section {
             background-color: var(--discord-dark);
             border-radius: 8px;
@@ -612,7 +760,7 @@
             color: #DC143C;
         }
 
-        /* Aslan Gencim Section */
+        /* Aslan Section */
         .aslan-section {
             background-color: var(--discord-dark);
             border-radius: 8px;
@@ -791,19 +939,25 @@
 
         .menu-divider {
             height: 1px;
-            background: #333;
-            margin: 10px 20px;
+            background: linear-gradient(90deg, transparent, rgba(139,0,0,0.5), transparent);
+            margin: 10px 16px;
         }
 
         .menu-header {
-            padding: 0 30px 15px;
-            color: var(--text-gray);
-            font-size: 0.75rem;
+            margin: 0 16px 12px;
+            padding: 12px 20px;
+            background: rgba(139, 0, 0, 0.1);
+            border: 1px solid rgba(139, 0, 0, 0.3);
+            border-radius: 12px;
+            color: #dc143c;
+            font-size: 0.8rem;
             text-transform: uppercase;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            font-weight: 700;
+            text-align: center;
         }
 
-        /* Discord Widget Stili */
+        /* Discord Widget */
         .discord-widget-container {
             margin-top: 20px;
             background-color: var(--discord-dark);
@@ -855,55 +1009,46 @@
             margin-top: 5px;
         }
 
-        /* ARKADAŞIN SUNUCUSU - GRADIENT TURUNCU-SARI-SİYAH TEMA */
+        /* Friend Server */
         .friend-server-section {
             margin-top: 20px;
         }
 
         .friend-server-card {
             background: linear-gradient(135deg, 
-                rgba(255, 179, 71, 0.15) 0%,    /* Açık turuncu */
-                rgba(255, 204, 51, 0.1) 25%,     /* Sarı-turuncu */
-                rgba(255, 140, 0, 0.15) 50%,     /* Turuncu */
-                rgba(204, 85, 0, 0.2) 75%,       /* Koyu turuncu */
-                rgba(26, 10, 0, 0.4) 100%        /* Siyah turuncu */
+                rgba(255, 179, 71, 0.15) 0%,
+                rgba(255, 204, 51, 0.1) 25%,
+                rgba(255, 140, 0, 0.15) 50%,
+                rgba(204, 85, 0, 0.2) 75%,
+                rgba(26, 10, 0, 0.4) 100%
             );
             border: 3px solid transparent;
             border-image: linear-gradient(135deg, 
-                var(--friend-orange-light) 0%, 
-                var(--friend-yellow-orange) 25%, 
-                var(--friend-orange) 50%, 
-                var(--friend-orange-dark) 75%, 
-                var(--friend-black) 100%
+                #FFB347 0%, 
+                #FFCC33 25%, 
+                #FF8C00 50%, 
+                #CC5500 75%, 
+                #1a0a00 100%
             ) 1;
             text-align: center;
             padding: 40px 30px;
             border-radius: 8px;
-            box-shadow: 
-                0 0 30px rgba(255, 140, 0, 0.3),
-                inset 0 0 60px rgba(255, 140, 0, 0.05);
+            box-shadow: 0 0 30px rgba(255, 140, 0, 0.3);
         }
 
         .friend-server-icon-large {
             width: 100px;
             height: 100px;
             border-radius: 20px;
-            background: linear-gradient(135deg, 
-                var(--friend-orange-light) 0%, 
-                var(--friend-yellow-orange) 30%, 
-                var(--friend-orange) 60%, 
-                var(--friend-orange-dark) 100%
-            );
+            background: linear-gradient(135deg, #FFB347, #FFCC33, #FF8C00, #CC5500);
             margin: 0 auto 20px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 50px;
-            box-shadow: 
-                0 0 40px rgba(255, 140, 0, 0.5),
-                0 0 80px rgba(255, 204, 51, 0.3);
+            box-shadow: 0 0 40px rgba(255, 140, 0, 0.5);
             overflow: hidden;
-            border: 3px solid var(--friend-yellow-orange);
+            border: 3px solid #FFCC33;
         }
 
         .friend-server-icon-large img {
@@ -916,14 +1061,9 @@
             font-size: 1.8rem;
             font-weight: 700;
             margin-bottom: 10px;
-            background: linear-gradient(135deg, 
-                var(--friend-orange-light) 0%, 
-                var(--friend-yellow-orange) 50%, 
-                var(--friend-orange) 100%
-            );
+            background: linear-gradient(135deg, #FFB347, #FFCC33, #FF8C00);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
         .friend-server-description {
@@ -937,21 +1077,14 @@
             align-items: center;
             gap: 10px;
             padding: 15px 40px;
-            background: linear-gradient(135deg, 
-                rgba(255, 179, 71, 0.2) 0%, 
-                rgba(255, 140, 0, 0.3) 100%
-            );
+            background: linear-gradient(135deg, rgba(255, 179, 71, 0.2), rgba(255, 140, 0, 0.3));
             color: var(--text-white);
             text-decoration: none;
             border-radius: 30px;
             font-weight: 600;
             font-size: 1.1rem;
             border: 2px solid transparent;
-            border-image: linear-gradient(135deg, 
-                var(--friend-orange-light), 
-                var(--friend-yellow-orange), 
-                var(--friend-orange)
-            ) 1;
+            border-image: linear-gradient(135deg, #FFB347, #FFCC33, #FF8C00) 1;
             transition: all 0.3s;
             position: relative;
             overflow: hidden;
@@ -964,11 +1097,7 @@
             left: 0;
             width: 0;
             height: 100%;
-            background: linear-gradient(135deg, 
-                var(--friend-orange-light) 0%, 
-                var(--friend-yellow-orange) 50%, 
-                var(--friend-orange) 100%
-            );
+            background: linear-gradient(135deg, #FFB347, #FFCC33, #FF8C00);
             transition: width 0.3s ease;
             z-index: -1;
         }
@@ -978,10 +1107,8 @@
         }
 
         .join-friend-server-btn:hover {
-            border-color: var(--friend-yellow-orange);
-            box-shadow: 
-                0 0 30px rgba(255, 140, 0, 0.6),
-                0 0 60px rgba(255, 204, 51, 0.4);
+            border-color: #FFCC33;
+            box-shadow: 0 0 30px rgba(255, 140, 0, 0.6);
             transform: translateY(-2px);
         }
 
@@ -993,10 +1120,7 @@
         }
 
         .friend-server-stat {
-            background: linear-gradient(135deg, 
-                rgba(255, 179, 71, 0.1) 0%, 
-                rgba(26, 10, 0, 0.3) 100%
-            );
+            background: linear-gradient(135deg, rgba(255, 179, 71, 0.1), rgba(26, 10, 0, 0.3));
             padding: 15px;
             border-radius: 8px;
             text-align: center;
@@ -1006,14 +1130,9 @@
         .friend-server-stat-value {
             font-size: 1.5rem;
             font-weight: 700;
-            background: linear-gradient(135deg, 
-                var(--friend-orange-light) 0%, 
-                var(--friend-yellow-orange) 50%, 
-                var(--friend-orange) 100%
-            );
+            background: linear-gradient(135deg, #FFB347, #FFCC33, #FF8C00);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            background-clip: text;
         }
 
         .friend-server-stat-label {
@@ -1024,29 +1143,17 @@
 
         .server-divider {
             height: 2px;
-            background: linear-gradient(90deg, 
-                transparent 0%, 
-                var(--friend-orange) 50%, 
-                transparent 100%
-            );
+            background: linear-gradient(90deg, transparent, #FF8C00, transparent);
             margin: 30px 0;
         }
 
-        /* Arkadaşın sunucusu widget container */
         .friend-server-widget-container {
             margin-top: 20px;
-            background: linear-gradient(135deg, 
-                rgba(255, 179, 71, 0.05) 0%, 
-                rgba(26, 10, 0, 0.2) 100%
-            );
+            background: linear-gradient(135deg, rgba(255, 179, 71, 0.05), rgba(26, 10, 0, 0.2));
             border-radius: 8px;
             padding: 20px;
             border: 2px solid transparent;
-            border-image: linear-gradient(135deg, 
-                var(--friend-orange-light), 
-                var(--friend-yellow-orange), 
-                var(--friend-orange)
-            ) 1;
+            border-image: linear-gradient(135deg, #FFB347, #FFCC33, #FF8C00) 1;
         }
 
         .friend-server-widget-header {
@@ -1054,14 +1161,11 @@
             margin-bottom: 15px;
             padding-bottom: 10px;
             border-bottom: 2px solid transparent;
-            border-image: linear-gradient(90deg, 
-                var(--friend-orange-light), 
-                var(--friend-yellow-orange)
-            ) 1;
+            border-image: linear-gradient(90deg, #FFB347, #FFCC33) 1;
             display: flex;
             align-items: center;
             gap: 10px;
-            color: var(--friend-yellow-orange);
+            color: #FFCC33;
         }
     </style>
 </head>
@@ -1081,7 +1185,7 @@
     <nav class="sidebar" id="sidebar">
         <div class="menu-header">Menü</div>
         <a href="#" class="menu-item" data-section="about">
-            <span class="menu-icon"><img src="user.png" alt="" onerror="this.style.display='none'; this.parentElement.innerHTML='👤';"></span>
+            <span class="menu-icon"><img src="reduser.png" alt="" onerror="this.style.display='none'; this.parentElement.innerHTML='👤';"></span>
             Hakkımda
         </a>
         <a href="#" class="menu-item" data-section="friends">
@@ -1101,48 +1205,69 @@
 
     <div class="container">
         
-        <!-- Discord Profil (Ana Sayfa) -->
+        <!-- ===== DARK RED PROFİL KARTI - KARE FORMAT ===== -->
         <div id="about-section" class="content-section active">
-            <div class="profile-header">
+            <div class="profile-card">
+                <!-- Banner -->
                 <div class="profile-banner"></div>
-                <div class="profile-info">
+                
+                <div class="profile-content">
+                    <!-- Avatar -->
                     <div class="avatar-wrapper">
                         <div class="avatar">
-                            <img src="https://mutluresim.com/images/2026/04/17/XTWwAm.webp" style="width: 100%; height: 100%; object-fit: cover;" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=\'font-size: 50px;\'>🩸</span>';">
+                            <img src="https://mutluresim.com/images/2026/04/17/XTWwAm.webp" alt="laixty" onerror="this.style.display='none'; this.parentElement.innerHTML='<span style=font-size:36px;>🩸</span>';">
                         </div>
-                        <div class="status-indicator"></div>
+                        <div class="status-dot"></div>
                     </div>
                     
-                    <div class="username">
-                        <span class="username-text">laixtydev</span>
-                        <span class="discriminator">#0001</span>
+                    <!-- Username -->
+                    <div class="username-area">
+                        <div class="username-main">
+                            laixtydev
+                            <span class="username-tag">#0001</span>
+                        </div>
+                        <div class="username-handle">laixtydev</div>
                     </div>
                     
-                    <div class="badges">
-                        <div class="badge" title="Geliştirici">
-                            <img src="developer.png" alt="Geliştirici">
+                    <!-- Badges -->
+                    <div class="badges-row">
+                        <div class="badge-item" id="devBadge" onclick="toggleBadge(this)">
+                            <img src="developer.png" alt="Geliştirici" onerror="this.style.display='none';">
+                            <span class="badge-tooltip">🛠️ Geliştirici Rozeti</span>
                         </div>
                     </div>
 
-                    <div class="about-section">
-                        <div class="section-label">Hakkımda</div>
+                    <!-- Divider -->
+                    <div class="section-divider"></div>
+
+                    <!-- About -->
+                    <div class="about-box">
+                        <div class="about-header">Hakkımda</div>
                         <div class="about-text">
-                            <p>Merhaba! Ben laixtydev. Discord botları ve web geliştirme ile uğraşıyorum.</p>
-                            <p>🎮 Oyun oynamayı severim<br>
-                            💻 kod 31 yazarım<br>
-                            🎵 Müzik dinlerim</p>
+                            <p>Merhaba! Ben <span class="highlight-name">laixtydev</span> — <span class="highlight-role">Discord Bot Developer</span> & Web Developer. Türkiye'den kod yazıyorum.</p>
+                        </div>
+                        
+                        <!-- Skills -->
+                        <div class="skills-row">
+                            <span class="skill-tag">🟥 JavaScript</span>
+                            <span class="skill-tag">🟩 Node.js</span>
+                            <span class="skill-tag">🟦 Discord.js</span>
+                            <span class="skill-tag">🟨 HTML/CSS</span>
                         </div>
                     </div>
 
-                    <div class="profile-details">
-                        <div class="detail-item">
-                            <span class="detail-icon">🆔</span>
-                            <span>Discord ID: 1478113240943694043</span>
+                    <!-- Projelerim - Yakında Düğmesi -->
+                    <div class="projects-section">
+                        <div class="projects-btn" onclick="alert('Projelerim yakında eklenecek!')">
+                            <span>📁</span>
+                            Projelerim
+                            <span class="soon-badge">YAKINDA</span>
                         </div>
-                        <div class="detail-item">
-                            <span class="detail-icon">📅</span>
-                            <span>Discord'a Katılma Tarihi: 17 Nisan 2024</span>
-                        </div>
+                    </div>
+
+                    <!-- Made by laixty -->
+                    <div class="made-by">
+                        Made by <span>laixty</span>
                     </div>
                 </div>
             </div>
@@ -1207,7 +1332,7 @@
                 </div>
             </div>
 
-            <!-- Petrolcü - _Wast -->
+            <!-- Petrolcü -->
             <div class="petrolcu-section">
                 <h2 class="petrolcu-title">
                     <span class="section-icon">🛢️</span> Petrolcü
@@ -1223,7 +1348,7 @@
                 </div>
             </div>
 
-            <!-- Piercer - minimelih -->
+            <!-- Piercer -->
             <div class="piercer-section">
                 <h2 class="piercer-title">
                     <span class="section-icon">🔥</span> Piercer
@@ -1298,7 +1423,7 @@
             </div>
         </div>
 
-        <!-- Discord Sunucum Section - ÇİFT SUNUCU -->
+        <!-- Discord Sunucum Section -->
         <div id="server-section" class="content-section">
             
             <!-- BENİM SUNUCUM -->
@@ -1332,7 +1457,7 @@
                 </a>
             </div>
 
-            <!-- Discord Widget Embed - BENİM SUNUCUM -->
+            <!-- Discord Widget Embed -->
             <div class="discord-widget-container">
                 <h2 class="discord-widget-header">
                     <span class="section-icon"><img src="reddc.png" alt=""></span> Sunucu Widget
@@ -1351,7 +1476,7 @@
 
             <div class="server-divider"></div>
 
-            <!-- ARKADAŞIN SUNUCUSU - GRADIENT TURUNCU TEMA -->
+            <!-- ARKADAŞIN SUNUCUSU -->
             <div class="friend-server-section">
                 <div class="friend-server-card">
                     <div class="friend-server-icon-large">
@@ -1383,7 +1508,7 @@
                     </a>
                 </div>
 
-                <!-- Discord Widget Embed - ARKADAŞIN SUNUCUSU -->
+                <!-- Discord Widget Embed -->
                 <div class="friend-server-widget-container">
                     <h2 class="friend-server-widget-header">
                         <span class="section-icon">🟠</span> Arkadaşımın Sunucu Widget
@@ -1406,13 +1531,15 @@
     </div>
 
     <script>
-        // DOM elementlerini seç
+        function toggleBadge(el) {
+            el.classList.toggle('selected');
+        }
+
         const menuBtn = document.getElementById('menuBtn');
         const sidebar = document.getElementById('sidebar');
         const sidebarOverlay = document.getElementById('sidebarOverlay');
         const menuItems = document.querySelectorAll('.menu-item');
 
-        // Menü aç/kapa fonksiyonu
         function toggleMenu() {
             menuBtn.classList.toggle('active');
             sidebar.classList.toggle('active');
@@ -1447,7 +1574,6 @@
             }
         }
 
-        // BENİM SUNUCUM - API
         const DISCORD_SERVER_ID = '1491420315769634896';
         
         async function updateDiscordData() {
@@ -1483,7 +1609,6 @@
             }
         }
 
-        // ARKADAŞIN SUNUCUSU - API
         const FRIEND_DISCORD_SERVER_ID = '1436397283057995938';
         
         async function updateFriendDiscordData() {
