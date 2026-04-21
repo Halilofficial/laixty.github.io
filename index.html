@@ -29,6 +29,10 @@
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             background-color: var(--pure-black);
+            background-image: url('indir.gif');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
             color: var(--text-white);
             min-height: 100vh;
             overflow-x: hidden;
@@ -481,22 +485,11 @@
             font-weight: 600;
         }
 
-        /* About section GIF background */
+        /* About section */
         #about-section {
             position: relative;
             border-radius: 20px;
             overflow: hidden;
-        }
-
-        #about-section::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background: url('indir.gif') center center / cover no-repeat;
-            border-radius: 20px;
-            z-index: 0;
-            opacity: 0.35;
-            pointer-events: none;
         }
 
         #about-section > .profile-card {
@@ -1232,7 +1225,10 @@
                     <!-- Badges -->
                     <div class="badges-row">
                         <div class="badge-item" id="devBadge" onclick="toggleBadge(this)">
-                            <img src="developer.png" alt="Geliştirici" onerror="this.style.display='none';">
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="#dc143c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="16 18 22 12 16 6"></polyline>
+                                <polyline points="8 6 2 12 8 18"></polyline>
+                            </svg>
                             <span class="badge-tooltip">🛠️ Geliştirici Rozeti</span>
                         </div>
                     </div>
